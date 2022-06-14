@@ -1,19 +1,20 @@
-import { Fragment, useContext } from 'react';
 import { Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectIsCartOpen } from '../../store/cart/cart.selector'
+import { selectCurrentUser } from '../../store/user/user.selector';
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import CartIcon from '../../components/cart-icon/cart-icon';
 import CartDropdown from '../../components/cart-drop-down/cart-drop-down';
-import { UserContext } from '../../context/user';
-import { CartContext } from '../../context/cart';
 import { signOutUser } from '../../utils/firebase/firebase';
 import { NavContainer, NavLink, NavLinks, LogoContainer } from './nav.styles';
 
 const Nav = () => {
-    const { currentUser } = useContext(UserContext);
-    const { isCartOpen } = useContext(CartContext);
+    const currentUser = useSelector(selectCurrentUser);
+    //const { isCartOpen } = useContext(CartContext);
+    const isCartOpen = useSelector(selectIsCartOpen);
 
     return (
-        <Fragment>
+        <>
             <NavContainer>
                 <LogoContainer to='/'>
                     <CrwnLogo className='logo' />
@@ -35,7 +36,7 @@ const Nav = () => {
                 {isCartOpen && <CartDropdown />}
             </NavContainer>
             <Outlet />
-        </Fragment>
+        </>
     );
 };
 
