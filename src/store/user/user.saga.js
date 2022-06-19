@@ -1,4 +1,4 @@
-import { takeLatest, all, call, put, take } from "redux-saga/effects";
+import { takeLatest, all, call, put } from "redux-saga/effects";
 import { USER_ACTION_TYPES } from "./user.types";
 import { signinSuccess, signinFailure, signupFailure, signupSuccess, signoutSuccess, signoutFailure } from "./user.action";
 import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, signInAuthUserWithEmailAndPassword, createAuthUserWithEmailAndPassword, signOutUser } from "../../utils/firebase/firebase";
@@ -6,7 +6,7 @@ import { getCurrentUser, createUserDocumentFromAuth, signInWithGooglePopup, sign
 export function* getSnapshotFromUserAuth(userAuth, additionalDetails) {
     try {
         const userSnapshot = yield call(createUserDocumentFromAuth, userAuth, additionalDetails);
-        yield put(signinSuccess({id: userSnapshot.id, ...userSnapshot.data() }));
+        yield put(signinSuccess({id: userSnapshot.id, ...userSnapshot.data }));
     }
     catch (error) {
         yield put(signinFailure(error));
@@ -23,7 +23,7 @@ export function* signinWithGoogle() {
     }
 }
 
-export function* singinWithEmail({payload: {email, password}}) {
+export function* signinWithEmail({payload: {email, password}}) {
     try {
         const {user} = yield call(signInAuthUserWithEmailAndPassword, email, password);
         yield call(getSnapshotFromUserAuth, user);
