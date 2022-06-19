@@ -5,13 +5,16 @@ import { selectCurrentUser } from '../../store/user/user.selector';
 import { ReactComponent as CrwnLogo } from '../../assets/crown.svg';
 import CartIcon from '../../components/cart-icon/cart-icon';
 import CartDropdown from '../../components/cart-drop-down/cart-drop-down';
-import { signOutUser } from '../../utils/firebase/firebase';
 import { NavContainer, NavLink, NavLinks, LogoContainer } from './nav.styles';
+import { useDispatch } from 'react-redux';
+import { signoutStart } from '../../store/user/user.action';
 
 const Nav = () => {
+    const dispatch = useDispatch();
     const currentUser = useSelector(selectCurrentUser);
     //const { isCartOpen } = useContext(CartContext);
     const isCartOpen = useSelector(selectIsCartOpen);
+    const signOutUser = () => dispatch(signoutStart());
 
     return (
         <>
